@@ -83,7 +83,59 @@ bash scripts/check.sh --run    # 真机: 看 provider 拉到了多少节点、�
 
 没有 mihomo 二进制时 `check.sh` 会自动从 GitHub release 下载 `amd64-compatible` 版（老 CPU 也能跑）。
 
-## 四、常见问题
+## 四、测速 / 自动选择 / 分流的实测表现
+
+这三个问题的答案取决于内核参数，不是"感觉好不好"，所以直接测：
+
+### 分流（规则命中）—— 16/16 正确
+内核跑起来后，通过代理口真实请求，读 debug 日志里的 `match` 记录：
+
+| 域名 | 命中规则 | 目标组 |
+|---|---|---|
+| www.netflix.com | GeoSite/netflix | 🎥 Netflix |
+| www.youtube.com | GeoSite/youtube | 📹 YouTube |
+| api.openai.com | GeoSite/openai | 🤖 ChatGPT |
+| claude.ai | GeoSite/category-ai-!cn | 🤖 AI服务 |
+| www.disneyplus.com / open.spotify.com | GeoSite/disney / spotify | 🎥 / 🎻 |
+| api.telegram.org | GeoSite/category-communication | 💬 即时通讯 |
+| github.com / steamcommunity.com | GeoSite/github / steam | 🚀 / 🎮 |
+| www.google.com / tiktok.com | GeoSite/google / tiktok | 🇬 / 🎶 |
+| www.apple.com / www.microsoft.com | GeoSite/apple / microsoft | 🍎 / Ⓜ️ |
+| www.baidu.com / bilibili / taobao | GeoSite/cn | 🎯 全球直连（正确直连） |
+
+> 分流由规则集决定，与"几个机场"无关；本次改造没动规则，只改了节点来源。
+
+### 自动选择（选得准不准）—— 已按实测结果修正
+**原配置里 `♻️ 自动选择` 是 `fallback` 类型**：按候选**顺序**取第一个能连通的，不是取延迟最低的。
+实测（同一次运行，同一批节点）：
+
+| 变体 | `♻️ 自动选择` 类型 | 选中节点延迟 | 组内最快 | 结论 |
+|---|---|---|---|---|
+| 原样 | fallback | 201 ms | 173 ms | ❌ 慢了 28 ms（它只是"能连"） |
+| 改后 | **url-test** (tolerance 50) | 184 ms | 184 ms | ✅ 就是最快 |
+
+4 个测速型组里"选中即最快"的比例：**原样 1/4 → 改后 3/4**（唯一没中的是 `🔯 故障转移`，它本来就该按可用性顺序取，见下）。
+
+所以模板已改成：`♻️ 自动选择` = `url-test`（要最快），`🔯 故障转移` = `fallback`（要"一定有得用"）。
+两者语义不同，别混用：**追速度选前者，追可用性/稳定选后者。**
+
+### 测速参数与它的局限
+| 参数 | 值 | 作用 |
+|---|---|---|
+| `unified-delay: true` | 开 | 统一握手耗时口径，跨机场的延迟数字才可比 |
+| `tolerance` | 自动选择 50 / 地区组 120 | 延迟差小于该值不切换，避免节点间来回抖动 |
+| `interval` | 180 s（自动选择）/ 300 s | 测速周期 |
+| `health-check.lazy` | provider 侧 true | 只在该组被使用时才测速，省电省流量 |
+
+局限（别指望它超出能力）：URLTest 测的是**到一个 gstatic 探测点的延迟**，
+不等于带宽、不等于流媒体/AI 能不能解锁。所以 Netflix/ChatGPT 这些组建议**手动选**已知解锁的地区节点，
+别交给 `自动选择`（它只看延迟，可能挑到一个延迟最低但解不了锁的机房）。
+
+### 已知空缺
+当前 47 条规则里**没有 REJECT**，也就是**没有广告拦截**。要的话加一组
+（`rule-providers` 引 Aethersailor/MetaCubeX 的 `category-ads-all`，再加 `- RULE-SET,Advertising,🛑 广告拦截` 与 `🛑 广告拦截` 组）。
+
+## 五、常见问题
 
 **首启规则集报 `initial rule provider ... error` / `EOF`**
 规则集和 GeoData 要联网拉取，而拉取请求会**按规则走代理**。如果此刻还没有可用节点，
@@ -107,7 +159,7 @@ mihomo 的 provider 是**按 provider 隔离**的，同名不会互相覆盖；�
 配置里 YouTube/Netflix/Disney+/HBO/ChatGPT 等各有独立分组，选一个解锁该服务的地区节点即可
 （一般新加坡/日本/美国原生 IP）。`♻️ 自动选择` 只看延迟，**不判断解锁能力**。
 
-## 五、把它变成一条订阅链接（可选，多设备自动更新）
+## 六、把它变成一条订阅链接（可选，多设备自动更新）
 
 想让手机/电视盒子都只填一个 URL、以后自动更新，把渲染出的 `dist/config.yaml` 放到任何能 HTTP 取到的地方即可：
 
@@ -119,13 +171,13 @@ mihomo 的 provider 是**按 provider 隔离**的，同名不会互相覆盖；�
 
 > 公开仓库里的 `config.yaml` 永远只有占位符；凭证要么在你本地，要么在你自己的私有托管里。
 
-## 六、安全
+## 七、安全
 
 - 仓库里**没有任何真实订阅链接**。`airports.yaml`、`dist/`、`bin/`、`proxy_provider/` 都在 `.gitignore`
 - 订阅链接 = 账号凭证，泄露等于把流量送人；要分享配置请只分享 `config.yaml` 模板
 - `external-controller: 0.0.0.0:9090` 是无鉴权的控制接口，建议改为 `127.0.0.1:9090` 并配 `secret`
 
-## 七、致谢
+## 八、致谢
 
 规则与模板结构参考并受益于这些项目：
 
