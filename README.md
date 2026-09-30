@@ -44,9 +44,10 @@ bash scripts/check.sh --run              # 再真机跑 8 秒，看 provider/策
         ├─ 🇭🇰 🇺🇸 🇯🇵 🇸🇬 🇹🇼 🇰🇷 🇨🇦 🇬🇧 🇫🇷 🇩🇪 🇳🇱 🇹🇷 地区组（四家节点按地区自动合并、自动测速）
         └─ 服务组：🤖 ChatGPT / AI服务 / 📹 YouTube / 🎥 Netflix / Disney+ / HBO / Emby /
                    💬 即时通讯 / 🌐 社交媒体 / 🚀 GitHub / 🎮 Steam / 🍎 苹果 / Ⓜ️ 微软 …
+                   🛑 广告拦截（默认 REJECT，可切成 DIRECT 一键关掉）
 ```
 
-**策略组共 50 个**，其中 33 个通过 `use:` 直接引用四家 provider（所以地区组和服务组拿到的是
+**策略组共 51 个**，其中 33 个通过 `use:` 直接引用四家 provider（所以地区组和服务组拿到的是
 **合并后的全部节点**，而不是只认一家）。规则集来自
 [Aethersailor/Custom_OpenClash_Rules](https://github.com/Aethersailor/Custom_OpenClash_Rules)，
 GeoData 走 [Loyalsoldier/v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat)（jsDelivr CDN）。
@@ -131,9 +132,27 @@ bash scripts/check.sh --run    # 真机: 看 provider 拉到了多少节点、�
 不等于带宽、不等于流媒体/AI 能不能解锁。所以 Netflix/ChatGPT 这些组建议**手动选**已知解锁的地区节点，
 别交给 `自动选择`（它只看延迟，可能挑到一个延迟最低但解不了锁的机房）。
 
-### 已知空缺
-当前 47 条规则里**没有 REJECT**，也就是**没有广告拦截**。要的话加一组
-（`rule-providers` 引 Aethersailor/MetaCubeX 的 `category-ads-all`，再加 `- RULE-SET,Advertising,🛑 广告拦截` 与 `🛑 广告拦截` 组）。
+### 广告拦截（已加，实测有效）
+新增 `🛑 广告拦截` 组（`select`，默认 `REJECT`，切成 `DIRECT` 即一键关闭）+ 规则
+`- RULE-SET,Advertising,🛑 广告拦截`（放在 private 直连之后、其它规则之前）。
+
+规则集用 **mrs 格式**（`MetaCubeX/meta-rules-dat` 的 `category-ads-all`，**8 KB / 910 条**）——
+比 blackmatrix7 的 `Advertising_Domain.yaml`（7.6 MB）/`Advertising_Classical.yaml`（10 MB）轻几个数量级，
+移动端/盒子上不值得为广告表拉十兆文件。想更全的话把 `rule-providers.Advertising.url` 换成那个大的即可
+（记得 `behavior: domain` → `classical`、`format: mrs` → `yaml`）。
+
+实测证据（同一内核，只切换该组的目标）：
+
+| 该组目标 | 请求 doubleclick.net / googleads.g.doubleclick.net | 说明 |
+|---|---|---|
+| `REJECT`（默认） | 失败，**50 ms** 返回 | 直接拒绝，不去拨号 —— 这就是"已拦"的特征 |
+| `DIRECT`（关掉） | 一次成功 650 ms、一次 8 s 超时 | 请求真的发出去了，说明差别来自这条规则 |
+
+- 规则表里位置：`#3 RuleSet Advertising -> 🛑 广告拦截`（规则总数 47 → 48）
+- 规则集加载状态：`behavior=Domain、format=MrsRule、ruleCount=910`
+- 非广告域名不受影响：netflix/openai 仍命中各自 GeoSite，baidu/taobao 仍直连
+- ⚠️ 广告表难免有误杀（某些 App 的统计/推送域名会被拦）。真遇到 App 异常，
+  把 `🛑 广告拦截` 切成 `DIRECT` 验证一下是不是它干的；确认误杀就把该域名加 `- DOMAIN-SUFFIX,xxx,🎯 全球直连`（放在广告规则之前）
 
 ## 五、常见问题
 

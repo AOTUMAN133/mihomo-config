@@ -221,6 +221,11 @@ proxy-groups:
   lazy: true
   tolerance: 50                       # 延迟差 <50ms 不切换, 避免来回抖
 
+- name: 🛑 广告拦截
+  type: select
+  proxies:
+  - REJECT
+  - DIRECT
 - name: 🔯 故障转移
   type: fallback
   url: http://www.gstatic.com/generate_204
@@ -1030,6 +1035,7 @@ proxy-groups:
 rules:
 - GEOSITE,private,🎯 全球直连
 - GEOIP,private,🎯 全球直连,no-resolve
+- RULE-SET,Advertising,🛑 广告拦截
 - RULE-SET,Custom_Direct_Domain,🎯 全球直连
 - RULE-SET,Custom_Direct_IP,🎯 全球直连
 - RULE-SET,Custom_Proxy_Domain,🚀 手动选择
@@ -1076,6 +1082,13 @@ rules:
 - RULE-SET,Custom_Port_Direct,🔀 非标端口
 - MATCH,🐟 漏网之鱼
 rule-providers:
+  Advertising:
+    behavior: domain
+    format: mrs
+    interval: 10800
+    path: ./rule_provider/Advertising.mrs
+    type: http
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ads-all.mrs
   Custom_Port_Direct:
     behavior: classical
     interval: 10800
