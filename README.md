@@ -151,6 +151,7 @@ bash scripts/check.sh --run    # 真机: 看 provider 拉到了多少节点、�
 - 规则表里位置：`#3 RuleSet Advertising -> 🛑 广告拦截`（规则总数 47 → 48）
 - 规则集加载状态：`behavior=Domain、format=MrsRule、ruleCount=910`
 - 非广告域名不受影响：netflix/openai 仍命中各自 GeoSite，baidu/taobao 仍直连
+- 拉不动时的替代地址（同一份文件，换 CDN）：`https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.mrs`
 - ⚠️ 广告表难免有误杀（某些 App 的统计/推送域名会被拦）。真遇到 App 异常，
   把 `🛑 广告拦截` 切成 `DIRECT` 验证一下是不是它干的；确认误杀就把该域名加 `- DOMAIN-SUFFIX,xxx,🎯 全球直连`（放在广告规则之前）
 
