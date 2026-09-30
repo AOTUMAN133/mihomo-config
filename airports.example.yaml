@@ -1,0 +1,14 @@
+# 机场订阅清单 —— 复制成本地的 airports.yaml 后填写
+# ⚠️ 这个文件里有你的订阅链接(等于账号凭证), 一定不要提交到公开仓库
+# .gitignore 已经把 airports.yaml / dist/ 排除掉了
+airports:
+  - id: A
+    name: 机场一
+    url: "https://你的机场一订阅链接"     # Clash 订阅页给的链接, 或加 &flag=clash
+  - id: B
+    name: 机场二
+    url: "https://你的机场二订阅链接"
+  # 用几个填几个: C / D 不写就自动从模板里剔除(对应策略组也一起删)
+  # - id: C
+  #   name: 机场三
+  #   url: "https://你的机场三订阅链接"

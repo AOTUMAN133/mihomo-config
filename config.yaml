@@ -1,0 +1,1119 @@
+# ============================================================
+# Mihomo (Clash.Meta) 多机场订阅配置模板
+# ------------------------------------------------------------
+# 结构: 4 个机场订阅(proxy-providers) -> 地区组自动合并四家节点 -> 服务组按需选择
+# 用法: 1) 把 REPLACE_ME_A ~ REPLACE_ME_D 换成机场订阅链接
+#       2) 校验: mihomo -t -f config.yaml  (或 bash scripts/check.sh)
+#       3) 导入客户端(Clash Verge / OpenClash / mihomo 内核 / Android)
+# 规则: Aethersailor/Custom_OpenClash_Rules + GEOSITE/GEOIP(v2ray-rules-dat)
+# 注意: 本文件不含真实订阅凭证(公开仓库不落凭证)
+# ============================================================
+port: 7890
+socks-port: 7891
+mixed-port: 7893
+redir-port: 7892
+tproxy-port: 7895
+allow-lan: true
+bind-address: '*'
+mode: rule
+tcp-concurrent: true
+unified-delay: true
+proxy-providers:
+  "机场一":
+    type: http
+    url: "REPLACE_ME_A"            # ← 机场订阅链接(或用 scripts/render.py 从 airports.yaml 注入)
+    interval: 3600                     # 订阅更新间隔(秒); 机场限速严可调大到 7200
+    path: ./proxy_provider/A.yaml
+    proxy: DIRECT                      # 拉订阅时不走代理
+    # 在该机场这一层先滤掉公告/流量/到期等非节点条目, 各策略组就不必重复配
+    filter: "^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$"
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 300
+      timeout: 5000
+      lazy: true                       # 按需测速省电; 想常驻测速改成 false
+    override:
+      udp: true
+      # additional-prefix: "[A] "  # 打开后节点名带 [A] 前缀, 多机场时一眼看清来源
+  "机场二":
+    type: http
+    url: "REPLACE_ME_B"            # ← 机场订阅链接(或用 scripts/render.py 从 airports.yaml 注入)
+    interval: 3600                     # 订阅更新间隔(秒); 机场限速严可调大到 7200
+    path: ./proxy_provider/B.yaml
+    proxy: DIRECT                      # 拉订阅时不走代理
+    # 在该机场这一层先滤掉公告/流量/到期等非节点条目, 各策略组就不必重复配
+    filter: "^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$"
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 300
+      timeout: 5000
+      lazy: true                       # 按需测速省电; 想常驻测速改成 false
+    override:
+      udp: true
+      # additional-prefix: "[B] "  # 打开后节点名带 [A] 前缀, 多机场时一眼看清来源
+  "机场三":
+    type: http
+    url: "REPLACE_ME_C"            # ← 机场订阅链接(或用 scripts/render.py 从 airports.yaml 注入)
+    interval: 3600                     # 订阅更新间隔(秒); 机场限速严可调大到 7200
+    path: ./proxy_provider/C.yaml
+    proxy: DIRECT                      # 拉订阅时不走代理
+    # 在该机场这一层先滤掉公告/流量/到期等非节点条目, 各策略组就不必重复配
+    filter: "^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$"
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 300
+      timeout: 5000
+      lazy: true                       # 按需测速省电; 想常驻测速改成 false
+    override:
+      udp: true
+      # additional-prefix: "[C] "  # 打开后节点名带 [A] 前缀, 多机场时一眼看清来源
+  "机场四":
+    type: http
+    url: "REPLACE_ME_D"            # ← 机场订阅链接(或用 scripts/render.py 从 airports.yaml 注入)
+    interval: 3600                     # 订阅更新间隔(秒); 机场限速严可调大到 7200
+    path: ./proxy_provider/D.yaml
+    proxy: DIRECT                      # 拉订阅时不走代理
+    # 在该机场这一层先滤掉公告/流量/到期等非节点条目, 各策略组就不必重复配
+    filter: "^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$"
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 300
+      timeout: 5000
+      lazy: true                       # 按需测速省电; 想常驻测速改成 false
+    override:
+      udp: true
+      # additional-prefix: "[D] "  # 打开后节点名带 [A] 前缀, 多机场时一眼看清来源
+
+  # ---- 可选: 自建 VPS 也当成一个 provider(取消注释并填 url) ----
+  # "自建节点":
+  #   type: http
+  #   url: "REPLACE_ME_SELF"
+  #   interval: 3600
+  #   path: ./proxy_provider/self.yaml
+  #   proxy: DIRECT
+  #   override:
+  #     additional-prefix: "🏴‍☠️ "
+
+  # ---- 可选: 把 Sub-Store 之类的聚合订阅再串成第 5 个源 ----
+  # "聚合源":
+  #   type: http
+  #   url: "http://192.168.1.133:3000/download/FreeAll?target=ClashMeta&ignoreFailedRemoteSub=true"
+  #   interval: 1800
+  #   path: ./proxy_provider/agg.yaml
+  #   proxy: DIRECT
+  #   override:
+  #     udp: true
+
+geox-url:
+  mmdb: https://testingcf.jsdelivr.net/gh/alecthw/mmdb_china_ip_list@release/Country.mmdb
+  geoip: https://testingcf.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat
+  geosite: https://testingcf.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat
+  asn: https://testingcf.jsdelivr.net/gh/xishang0128/geoip@release/GeoLite2-ASN.mmdb
+geo-auto-update: true
+geo-update-interval: 24
+geodata-mode: true
+log-level: info
+ipv6: true
+external-controller: 0.0.0.0:9090
+profile:
+  store-selected: true
+  store-fake-ip: true
+tun:
+  enable: true
+  stack: system
+  dns-hijack:
+  - 0.0.0.0:53
+  auto-detect-interface: false
+  auto-route: false
+  auto-redirect: false
+  strict-route: false
+  endpoint-independent-nat: true
+sniffer:
+  enable: true
+  override-destination: true
+  sniff:
+    QUIC:
+      ports:
+      - 443
+    TLS:
+      ports:
+      - 443
+      - 8443
+    HTTP:
+      ports:
+      - 80
+      - 8080-8880
+      override-destination: true
+  force-domain:
+  - +.netflix.com
+  - +.nflxvideo.net
+  - +.amazonaws.com
+  - +.media.dssott.com
+  skip-domain:
+  - +.apple.com
+  - Mijia Cloud
+  - dlg.io.mi.com
+  - +.oray.com
+  - +.sunlogin.net
+  - +.push.apple.com
+  parse-pure-ip: true
+  force-dns-mapping: true
+dns:
+  enable: true
+  listen: 0.0.0.0:7874
+  ipv6: true
+  default-nameserver:
+  - 114.114.114.114
+  - tls://223.5.5.5:853
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+  - '*.lan'
+  - localhost.ptlogin2.qq.com
+  - geosite:cn
+  fake-ip-filter-mode: blacklist
+  respect-rules: false
+  nameserver:
+  - https://doh.pub/dns-query
+  - https://dns.alidns.com/dns-query
+proxy-groups:
+- name: 🚀 手动选择
+  type: select
+  url: http://www.gstatic.com/generate_204
+  interval: 300
+  proxies:
+  - ♻️ 自动选择
+  - 🔯 故障转移
+  - ⚖️ 负载均衡
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: ♻️ 自动选择
+  type: fallback
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  url: http://www.gstatic.com/generate_204
+  interval: 180
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+  lazy: true
+
+- name: 🔯 故障转移
+  type: fallback
+  url: http://www.gstatic.com/generate_204
+  interval: 300
+  lazy: true
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+
+- name: ⚖️ 负载均衡
+  type: load-balance
+  strategy: consistent-hashing
+  url: http://www.gstatic.com/generate_204
+  interval: 300
+  lazy: true
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+
+- name: 1️⃣ 机场一
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  interval: 300
+  tolerance: 120
+  lazy: true
+  use:
+  - 机场一
+
+- name: 2️⃣ 机场二
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  interval: 300
+  tolerance: 120
+  lazy: true
+  use:
+  - 机场二
+
+- name: 3️⃣ 机场三
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  interval: 300
+  tolerance: 120
+  lazy: true
+  use:
+  - 机场三
+
+- name: 4️⃣ 机场四
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  interval: 300
+  tolerance: 120
+  lazy: true
+  use:
+  - 机场四
+- name: 💬 即时通讯
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+- name: 🌐 社交媒体
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 🚀 GitHub
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+- name: 🤖 ChatGPT
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 🤖 Copilot
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 🤖 AI服务
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 🎶 TikTok
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 📹 YouTube
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇸🇬 新加坡节点
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 🎥 Netflix
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇸🇬 新加坡节点
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 🎥 DisneyPlus
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇸🇬 新加坡节点
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 🎥 HBO
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇸🇬 新加坡节点
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 🎥 PrimeVideo
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇸🇬 新加坡节点
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 🎥 AppleTV+
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇸🇬 新加坡节点
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 🎥 Emby
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 🎻 Spotify
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 📺 Bahamut
+  type: select
+  proxies:
+  - 🇼🇸 台湾节点
+  - 🚀 手动选择
+  - ♻️ 自动选择
+  - 🎯 全球直连
+- name: 🌎 国外媒体
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇸🇬 新加坡节点
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 🛒 国外电商
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 📢 谷歌FCM
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+- name: 🇬 谷歌服务
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+- name: 🍎 苹果服务
+  type: select
+  proxies:
+  - 🎯 全球直连
+  - ♻️ 自动选择
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+- name: Ⓜ️ 微软服务
+  type: select
+  proxies:
+  - 🎯 全球直连
+  - ♻️ 自动选择
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+- name: 🎮 游戏平台
+  type: select
+  proxies:
+  - 🎯 全球直连
+  - ♻️ 自动选择
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+- name: 🎮 Steam
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🎯 全球直连
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 🚀 测速工具
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🎯 全球直连
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 🐟 漏网之鱼
+  type: select
+  proxies:
+  - ♻️ 自动选择
+  - 🇭🇰 香港节点
+  - 🇺🇸 美国节点
+  - 🇯🇵 日本节点
+  - 🇸🇬 新加坡节点
+  - 🇼🇸 台湾节点
+  - 🇰🇷 韩国节点
+  - 🇨🇦 加拿大节点
+  - 🇬🇧 英国节点
+  - 🇫🇷 法国节点
+  - 🇩🇪 德国节点
+  - 🇳🇱 荷兰节点
+  - 🇹🇷 土耳其节点
+  - 🌐 其他地区
+  - 🚀 手动选择
+  - 🎯 全球直连
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+- name: 🔀 非标端口
+  type: select
+  proxies:
+  - 🐟 遵循规则
+  - 🎯 全球直连
+- name: 🇭🇰 香港节点
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  filter: (?i)(🇭🇰|港|\bHK(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|hk|Hong Kong|HongKong|hongkong|HONG KONG|HONGKONG|深港|HKG|九龙|Kowloon|新界|沙田|荃湾|葵涌)
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+  interval: 300
+  tolerance: 120
+- name: 🇺🇸 美国节点
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  filter: (?i)(🇺🇸|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|纽约|纽纽|亚特兰大|迈阿密|华盛顿|\bUS(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|United States|UnitedStates|UNITED STATES|USA|America|AMERICA|JFK|EWR|IAD|ATL|ORD|MIA|NYC|LAX|SFO|SEA|DFW|SJC)
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+  interval: 300
+  tolerance: 120
+- name: 🇯🇵 日本节点
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  filter: (?i)(🇯🇵|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|(?<!尼|-)日|\bJP(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Japan|JAPAN|JPN|NRT|HND|KIX|TYO|OSA|关西|Kansai|KANSAI)
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+  interval: 300
+  tolerance: 120
+- name: 🇸🇬 新加坡节点
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  filter: (?i)(🇸🇬|新加坡|坡|狮城|\bSG(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Singapore|SINGAPORE|SIN)
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+  interval: 300
+  tolerance: 120
+- name: 🇼🇸 台湾节点
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  filter: (?i)(🇹🇼|🇼🇸|台|新北|彰化|\bTW(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Taiwan|TAIWAN|TWN|TPE|ROC)
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+  interval: 300
+  tolerance: 120
+- name: 🇰🇷 韩国节点
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  filter: (?i)(🇰🇷|\bKR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Korea|KOREA|KOR|首尔|韩|韓|春川|Chuncheon|ICN)
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+  interval: 300
+  tolerance: 120
+- name: 🇨🇦 加拿大节点
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  filter: (?i)(🇨🇦|加拿大|\bCA(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Canada|CANADA|CAN|渥太华|温哥华|卡尔加里|蒙特利尔|Montreal|YVR|YYZ|YUL)
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+  interval: 300
+  tolerance: 120
+- name: 🇬🇧 英国节点
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  filter: (?i)(🇬🇧|英国|Britain|United Kingdom|UNITED KINGDOM|England|伦敦|曼彻斯特|Manchester|\bUK(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|GBR|LHR|MAN)
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+  interval: 300
+  tolerance: 120
+- name: 🇫🇷 法国节点
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  filter: (?i)(🇫🇷|法国|\bFR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|France|FRANCE|FRA|巴黎|马赛|Marseille|CDG|MRS)
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+  interval: 300
+  tolerance: 120
+- name: 🇩🇪 德国节点
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  filter: (?i)(🇩🇪|德国|Germany|GERMANY|\bDE(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|DEU|柏林|法兰克福|慕尼黑|Munich|MUC)
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+  interval: 300
+  tolerance: 120
+- name: 🇳🇱 荷兰节点
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  filter: (?i)(🇳🇱|荷兰|Netherlands|NETHERLANDS|\bNL(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|NLD|阿姆斯特丹|AMS)
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+  interval: 300
+  tolerance: 120
+- name: 🇹🇷 土耳其节点
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  filter: (?i)(🇹🇷|土耳其|Turkey|TURKEY|Türkiye|\bTR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|TUR|IST|ANK)
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+  interval: 300
+  tolerance: 120
+- name: 🌐 其他地区
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  filter: ^(?!.*(港|\bHK(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|hk|Hong Kong|HongKong|hongkong|HONG KONG|HONGKONG|深港|HKG|🇭🇰|九龙|Kowloon|新界|沙田|荃湾|葵涌|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|纽约|纽纽|亚特兰大|迈阿密|华盛顿|\bUS(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|United States|UnitedStates|UNITED STATES|USA|America|AMERICA|JFK|EWR|IAD|ATL|ORD|MIA|NYC|LAX|SFO|SEA|DFW|SJC|🇺🇸|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|(?<!尼|-)日|\bJP(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Japan|JAPAN|JPN|NRT|HND|KIX|TYO|OSA|🇯🇵|关西|Kansai|KANSAI|新加坡|坡|狮城|\bSG(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Singapore|SINGAPORE|SIN|🇸🇬|台|新北|彰化|\bTW(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Taiwan|TAIWAN|TWN|TPE|ROC|🇹🇼|\bKR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Korea|KOREA|KOR|首尔|韩|韓|春川|Chuncheon|ICN|🇰🇷|加拿大|\bCA(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Canada|CANADA|CAN|渥太华|温哥华|卡尔加里|蒙特利尔|Montreal|YVR|YYZ|YUL|🇨🇦|英国|Britain|United Kingdom|UNITED KINGDOM|England|伦敦|曼彻斯特|Manchester|\bUK(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|GBR|LHR|MAN|🇬🇧|法国|\bFR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|France|FRANCE|FRA|巴黎|马赛|Marseille|CDG|MRS|🇫🇷|德国|Germany|GERMANY|\bDE(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|DEU|柏林|法兰克福|慕尼黑|Munich|MUC|🇩🇪|荷兰|Netherlands|NETHERLANDS|\bNL(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|NLD|阿姆斯特丹|AMS|🇳🇱|土耳其|Turkey|TURKEY|Türkiye|\bTR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|TUR|IST|ANK|🇹🇷|DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB)).*$
+  use:
+  - 机场一
+  - 机场二
+  - 机场三
+  - 机场四
+  interval: 300
+  tolerance: 120
+- name: 🎯 全球直连
+  type: select
+  url: http://www.gstatic.com/generate_204
+  proxies:
+  - DIRECT
+- name: 🐟 遵循规则
+  type: select
+  url: http://www.gstatic.com/generate_204
+  proxies:
+  - 🐟 漏网之鱼
+rules:
+- GEOSITE,private,🎯 全球直连
+- GEOIP,private,🎯 全球直连,no-resolve
+- RULE-SET,Custom_Direct_Domain,🎯 全球直连
+- RULE-SET,Custom_Direct_IP,🎯 全球直连
+- RULE-SET,Custom_Proxy_Domain,🚀 手动选择
+- RULE-SET,Custom_Proxy_IP,🚀 手动选择
+- GEOSITE,google-cn,🎯 全球直连
+- GEOSITE,category-games@cn,🎯 全球直连
+- RULE-SET,Steam_CDN,🎯 全球直连
+- GEOSITE,category-game-platforms-download,🎯 全球直连
+- GEOSITE,category-public-tracker,🎯 全球直连
+- GEOSITE,category-communication,💬 即时通讯
+- DOMAIN-SUFFIX,api.xixixixi.cloud,🎯 全球直连
+- GEOSITE,category-social-media-!cn,🌐 社交媒体
+- GEOSITE,openai,🤖 ChatGPT
+- GEOSITE,bing,🤖 Copilot
+- GEOSITE,category-ai-!cn,🤖 AI服务
+- GEOSITE,github,🚀 GitHub
+- GEOSITE,category-speedtest,🚀 测速工具
+- GEOSITE,steam,🎮 Steam
+- GEOSITE,youtube,📹 YouTube
+- GEOSITE,apple-tvplus,🎥 AppleTV+
+- GEOSITE,apple,🍎 苹果服务
+- GEOSITE,microsoft,Ⓜ️ 微软服务
+- GEOSITE,googlefcm,📢 谷歌FCM
+- GEOSITE,google,🇬 谷歌服务
+- GEOSITE,tiktok,🎶 TikTok
+- GEOSITE,netflix,🎥 Netflix
+- GEOSITE,disney,🎥 DisneyPlus
+- GEOSITE,hbo,🎥 HBO
+- GEOSITE,primevideo,🎥 PrimeVideo
+- GEOSITE,category-emby,🎥 Emby
+- GEOSITE,spotify,🎻 Spotify
+- GEOSITE,bahamut,📺 Bahamut
+- GEOSITE,category-games,🎮 游戏平台
+- GEOSITE,category-entertainment,🌎 国外媒体
+- GEOSITE,category-ecommerce,🛒 国外电商
+- GEOSITE,gfw,🚀 手动选择
+- GEOIP,telegram,💬 即时通讯,no-resolve
+- GEOIP,twitter,🌐 社交媒体,no-resolve
+- GEOIP,facebook,🌐 社交媒体,no-resolve
+- GEOIP,google,🇬 谷歌服务,no-resolve
+- GEOIP,netflix,🎥 Netflix,no-resolve
+- GEOSITE,cn,🎯 全球直连
+- GEOIP,cn,🎯 全球直连,no-resolve
+- RULE-SET,Custom_Port_Direct,🔀 非标端口
+- MATCH,🐟 漏网之鱼
+rule-providers:
+  Custom_Port_Direct:
+    behavior: classical
+    interval: 10800
+    path: ./rule_provider/Custom_Port_Direct.yaml
+    type: http
+    url: https://testingcf.jsdelivr.net/gh/Aethersailor/Custom_OpenClash_Rules@main/rule/Custom_Port_Direct.yaml
+    format: yaml
+  Custom_Direct_Domain:
+    behavior: domain
+    interval: 10800
+    path: ./rule_provider/Custom_Direct_Domain.yaml
+    type: http
+    url: https://testingcf.jsdelivr.net/gh/Aethersailor/Custom_OpenClash_Rules@main/rule/Custom_Direct_Domain.mrs
+    format: mrs
+  Custom_Direct_IP:
+    behavior: classical
+    interval: 10800
+    path: ./rule_provider/Custom_Direct_Classical_IP.yaml
+    type: http
+    url: https://testingcf.jsdelivr.net/gh/Aethersailor/Custom_OpenClash_Rules@main/rule/Custom_Direct_Classical_IP.yaml
+    format: yaml
+  Custom_Proxy_Domain:
+    behavior: domain
+    interval: 10800
+    path: ./rule_provider/Custom_Proxy_Domain.yaml
+    type: http
+    url: https://testingcf.jsdelivr.net/gh/Aethersailor/Custom_OpenClash_Rules@main/rule/Custom_Proxy_Domain.mrs
+    format: mrs
+  Custom_Proxy_IP:
+    behavior: classical
+    interval: 10800
+    path: ./rule_provider/Custom_Proxy_Classical_IP.yaml
+    type: http
+    url: https://testingcf.jsdelivr.net/gh/Aethersailor/Custom_OpenClash_Rules@main/rule/Custom_Proxy_Classical_IP.yaml
+    format: yaml
+  Steam_CDN:
+    behavior: classical
+    interval: 10800
+    path: ./rule_provider/Steam_CDN_Classical.yaml
+    type: http
+    url: https://testingcf.jsdelivr.net/gh/Aethersailor/Custom_OpenClash_Rules@main/rule/Steam_CDN_Classical.yaml
+    format: yaml

@@ -1,0 +1,134 @@
+# mihomo 多机场配置模板
+
+一份**能同时挂多个机场订阅**的 mihomo (Clash.Meta) 配置：四家机场的节点自动合并进同一个地区组，
+一份配置导入所有设备，某个机场跑路/掉速也不会整体失联。
+
+- `config.yaml` —— 模板本体（只有 `REPLACE_ME_A ~ REPLACE_ME_D` 占位，**不含任何真实订阅链接**，可随意公开/分享）
+- `airports.example.yaml` —— 机场清单示例（复制成 `airports.yaml` 填链接，已 gitignore）
+- `scripts/render.py` —— 把 `airports.yaml` 里的链接注入模板，输出 `dist/config.yaml`
+- `scripts/check.sh` —— 用 mihomo 内核校验：语法 + 真机加载（provider / 策略组）
+- `.github/workflows/validate.yml` —— 每次 push 自动用 mihomo 校验模板（CI 用假链接，不碰凭证）
+
+---
+
+## 一、3 分钟上手
+
+```bash
+git clone https://github.com/AOTUMAN133/mihomo-config && cd mihomo-config
+
+# 方式一：最省事 —— 直接编辑 config.yaml，把 4 处 REPLACE_ME_x 换成订阅链接，完事
+# 方式二（推荐）：链接单独放，模板保持干净、可以随时 pull 上游更新
+cp airports.example.yaml airports.yaml   # 填 1~4 个机场链接
+python3 scripts/render.py                # 生成 dist/config.yaml
+bash scripts/check.sh                    # 先语法校验
+bash scripts/check.sh --run              # 再真机跑 8 秒，看 provider/策略组有没有加载
+```
+
+然后把 `dist/config.yaml`（或改好的 `config.yaml`）喂给客户端：
+
+- **Clash Verge / Clash Verge Rev**：配置 → 新建 → 本地文件 选 `dist/config.yaml`；
+  或者放进 `profiles/` 目录。想自动更新就把它放到一个能被 URL 拉到的位置，用「远程」导入。
+- **mihomo 内核 / OpenClash**：OpenClash → 配置文件 → 上传/指定路径。
+- **Android**：mihomo/clash 系客户端（ClashMetaForAndroid、FlClash 等）导入本地文件。
+
+> 只填了 2 个机场？不用删任何东西 —— `render.py` 会把没填的那些机场的 provider 块、策略组、
+> `use:` 引用**整块剔除**，剩下的配置照样是完整可用的。
+
+## 二、这份配置长什么样
+
+```
+4 个机场订阅 (proxy-providers, 各自独立测速/更新)
+        │
+        ├─ 1️⃣ 机场一 / 2️⃣ 机场二 / 3️⃣ 机场三 / 4️⃣ 机场四   （单独用某一家的节点）
+        ├─ ♻️ 自动选择 (fallback) / 🔯 故障转移 (fallback) / ⚖️ 负载均衡 (load-balance)
+        ├─ 🇭🇰 🇺🇸 🇯🇵 🇸🇬 🇹🇼 🇰🇷 🇨🇦 🇬🇧 🇫🇷 🇩🇪 🇳🇱 🇹🇷 地区组（四家节点按地区自动合并、自动测速）
+        └─ 服务组：🤖 ChatGPT / AI服务 / 📹 YouTube / 🎥 Netflix / Disney+ / HBO / Emby /
+                   💬 即时通讯 / 🌐 社交媒体 / 🚀 GitHub / 🎮 Steam / 🍎 苹果 / Ⓜ️ 微软 …
+```
+
+**策略组共 50 个**，其中 33 个通过 `use:` 直接引用四家 provider（所以地区组和服务组拿到的是
+**合并后的全部节点**，而不是只认一家）。规则集来自
+[Aethersailor/Custom_OpenClash_Rules](https://github.com/Aethersailor/Custom_OpenClash_Rules)，
+GeoData 走 [Loyalsoldier/v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat)（jsDelivr CDN）。
+
+几个刻意的设计：
+
+| 设计 | 为什么 |
+|---|---|
+| 每个 provider 层带垃圾节点过滤 `filter:` | 公告/流量/到期这类条目在**入口**就被滤掉，各策略组不必重复配 |
+| `health-check.lazy: true` | 按需测速。50 个组 × 4 家机场全量测速很费电费流量，笔记本/手机建议保持 true |
+| `profile.store-selected: true` | 手动选过的节点重启后还记得 |
+| 机场专组（`1️⃣~4️⃣`） | 想固定只走某一家时直接选它，不用在一堆节点里翻 |
+| `⚖️ 负载均衡`（consistent-hashing） | 大流量/多连接场景把请求摊到多家，单家限速时更稳 |
+| `airports.yaml` 与模板分离 | 模板可以放公开仓库并持续更新，凭证永远不进 Git |
+
+## 三、验证（交付前的标准动作）
+
+```bash
+bash scripts/check.sh          # 语法: 期望 "configuration file ... test is successful"
+bash scripts/check.sh --run    # 真机: 看 provider 拉到了多少节点、有没有 error
+```
+
+实测样例（用两个公开免费源当替身，只验证管线）：
+
+```
+1️⃣ 机场一   URLTest     候选=19
+2️⃣ 机场二   URLTest     候选=26
+♻️ 自动选择  Fallback    候选=45     ← 两家节点确实合并了
+🔯 故障转移  Fallback    候选=45
+⚖️ 负载均衡  LoadBalance 候选=45
+🚀 手动选择  Selector    候选=61
+🇺🇸 美国节点 URLTest     候选=25     ← 地区组跨机场合并生效
+```
+
+没有 mihomo 二进制时 `check.sh` 会自动从 GitHub release 下载 `amd64-compatible` 版（老 CPU 也能跑）。
+
+## 四、常见问题
+
+**首启规则集报 `initial rule provider ... error` / `EOF`**
+规则集和 GeoData 要联网拉取，而拉取请求会**按规则走代理**。如果此刻还没有可用节点，
+首次会拉失败——节点测速出结果后会自动重试（间隔 3 小时），或重启一次内核即可。
+也可以在本地 `rule_provider/`、`geo*` 缓存就绪后再启动代理。
+
+**某家机场的节点没出现在地区组里**
+地区组靠节点名里的关键词匹配（`香港|HK|HongKong`、`美国|US|United States`…）。
+机场给节点起名太随意（纯数字、`Node1` 这种）就匹配不到。办法：给该 provider 打开
+`override.additional-prefix`，或在 `filter:` 里按你看到的实际命名补关键词。
+
+**多个机场有同名节点**
+mihomo 的 provider 是**按 provider 隔离**的，同名不会互相覆盖；但 UI 上不易分辨，
+打开 `override.additional-prefix: "[A] "` 就会带上来源前缀。
+
+**想让订阅自动更新**
+`interval: 3600` 控制拉取间隔（已经是自动的）。机场限速严就调大到 7200。
+用 `render.py` 的话，重新跑一次脚本即可；直接改 `config.yaml` 的话改完记得重载配置。
+
+**流媒体/AI 解锁**
+配置里 YouTube/Netflix/Disney+/HBO/ChatGPT 等各有独立分组，选一个解锁该服务的地区节点即可
+（一般新加坡/日本/美国原生 IP）。`♻️ 自动选择` 只看延迟，**不判断解锁能力**。
+
+## 五、把它变成一条订阅链接（可选，多设备自动更新）
+
+想让手机/电视盒子都只填一个 URL、以后自动更新，把渲染出的 `dist/config.yaml` 放到任何能 HTTP 取到的地方即可：
+
+- **自建静态托管**（推荐）：丢到自己的 nginx / 网盘容器 / 任意 web 目录，得到一个 URL；
+  建议 URL 带一段随机串（`/sub/<乱码>/config.yaml`），别裸奔在公网目录里。
+- **私有仓库**：渲染产物推到私有仓库，用 raw 链接——注意私有仓库的 raw 需要 token，多数客户端不方便。
+- **GitHub Actions 自动渲染**：把 `airports.yaml` 存成仓库 Secret，用一个 workflow 定时渲染并推到私有仓库/Gist。
+  需要的话可以按这个思路加，模板仓库本身永远不落凭证。
+
+> 公开仓库里的 `config.yaml` 永远只有占位符；凭证要么在你本地，要么在你自己的私有托管里。
+
+## 六、安全
+
+- 仓库里**没有任何真实订阅链接**。`airports.yaml`、`dist/`、`bin/`、`proxy_provider/` 都在 `.gitignore`
+- 订阅链接 = 账号凭证，泄露等于把流量送人；要分享配置请只分享 `config.yaml` 模板
+- `external-controller: 0.0.0.0:9090` 是无鉴权的控制接口，建议改为 `127.0.0.1:9090` 并配 `secret`
+
+## 七、致谢
+
+规则与模板结构参考并受益于这些项目：
+
+- [Aethersailor/Custom_OpenClash_Rules](https://github.com/Aethersailor/Custom_OpenClash_Rules) —— 分流规则、策略组结构
+- [MetaCubeX/mihomo](https://github.com/MetaCubeX/mihomo) —— 内核与文档
+- [Loyalsoldier/v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat) —— GeoIP/GeoSite 数据

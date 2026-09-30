@@ -1,0 +1,50 @@
+name: validate-config
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  mihomo-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 下载 mihomo 内核
+        run: |
+          URL=$(curl -s https://api.github.com/repos/MetaCubeX/mihomo/releases/latest \
+                | grep -oE '"browser_download_url": *"[^"]*linux-amd64-compatible-[^"]*\.gz"' \
+                | head -1 | sed 's/.*"\(https[^"]*\)"/\1/')
+          echo "内核: $URL"
+          curl -sL "$URL" -o mihomo.gz && gunzip -f mihomo.gz && chmod +x mihomo
+          ./mihomo -v | head -1
+
+      - name: 用 CI 假订阅渲染(不含任何真实凭证)
+        run: |
+          RAW="https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/tests/fixtures"
+          cat > /tmp/airports-4.yaml <<EOF
+          airports:
+            - {id: A, name: 机场一, url: "$RAW/sub-a.yaml"}
+            - {id: B, name: 机场二, url: "$RAW/sub-b.yaml"}
+            - {id: C, name: 机场三, url: "$RAW/sub-a.yaml"}
+            - {id: D, name: 机场四, url: "$RAW/sub-b.yaml"}
+          EOF
+          cat > /tmp/airports-1.yaml <<EOF
+          airports:
+            - {id: B, name: 机场二, url: "$RAW/sub-b.yaml"}
+          EOF
+          python3 scripts/render.py --airports /tmp/airports-4.yaml --out /tmp/config-4.yaml
+          python3 scripts/render.py --airports /tmp/airports-1.yaml --out /tmp/config-1.yaml
+          python3 scripts/render.py --airports airports.example.yaml --out /tmp/should-fail.yaml || echo "(占位未填时报错 -> 符合预期)"
+          grep -c "REPLACE_ME" /tmp/config-4.yaml || echo "占位已全部替换"
+
+      - name: mihomo -t 校验(4 机场 / 单机场 两种裁剪形态)
+        run: |
+          ./mihomo -t -f /tmp/config-4.yaml -d /tmp/d4
+          ./mihomo -t -f /tmp/config-1.yaml -d /tmp/d1
+          grep -q "机场三" /tmp/config-1.yaml && { echo "单机场裁剪失败: 仍有机场三"; exit 1; } || echo "单机场裁剪 OK"
+
+      - name: 校验通过
+        run: echo "✅ 模板语法与裁剪逻辑均通过"

@@ -1,0 +1,5 @@
+# 仅用于 CI 校验模板结构(节点不可连接)
+proxies:
+  - {name: "🇭🇰 HK-01", type: ss, server: 127.0.0.1, port: 8388, cipher: aes-128-gcm, password: ci-fixture}
+  - {name: "🇭🇰 HK-02", type: ss, server: 127.0.0.1, port: 8389, cipher: aes-128-gcm, password: ci-fixture}
+  - {name: "🇯🇵 JP-01", type: ss, server: 127.0.0.1, port: 8390, cipher: aes-128-gcm, password: ci-fixture}

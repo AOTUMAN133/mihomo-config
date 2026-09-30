@@ -1,0 +1,18 @@
+# 真实订阅链接(凭证)不进仓库
+airports.yaml
+*.local.yaml
+
+# 渲染产物
+dist/
+config.local.yaml
+
+# mihomo 运行/缓存产物
+bin/
+proxy_provider/
+rule_provider/
+cache.db
+*.log
+geosite.dat
+geoip.dat
+Country.mmdb
+GeoLite2-ASN.mmdb
