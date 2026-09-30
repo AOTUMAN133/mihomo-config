@@ -17,7 +17,7 @@ if [ ! -x "$BIN" ]; then
   echo "==> 下载 mihomo 内核 (compatible 版, 兼容老 CPU)"
   mkdir -p bin
   # 走宿主机代理时取消下面一行的注释
-  # export https_proxy=http://192.168.1.33:7890 http_proxy=http://192.168.1.33:7890
+  # export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890
   URL=$(curl -s https://api.github.com/repos/MetaCubeX/mihomo/releases/latest \
         | grep -oE '"browser_download_url": *"[^"]*linux-amd64-compatible-[^"]*\.gz"' \
         | head -1 | sed 's/.*"\(https[^"]*\)"/\1/')

@@ -101,7 +101,7 @@ proxy-providers:
   # ---- 可选: 把 Sub-Store 之类的聚合订阅再串成第 5 个源 ----
   # "聚合源":
   #   type: http
-  #   url: "http://192.168.1.133:3000/download/FreeAll?target=ClashMeta&ignoreFailedRemoteSub=true"
+  #   url: "http://<你的Sub-Store地址>:3000/download/FreeAll?target=ClashMeta&ignoreFailedRemoteSub=true"
   #   interval: 1800
   #   path: ./proxy_provider/agg.yaml
   #   proxy: DIRECT
