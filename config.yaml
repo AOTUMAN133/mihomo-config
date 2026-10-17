@@ -19,7 +19,7 @@ mode: rule
 tcp-concurrent: true
 unified-delay: true
 proxy-providers:
-  "机场一":
+  "鸡场":
     type: http
     url: "REPLACE_ME_A"            # ← 机场订阅链接(或用 scripts/render.py 从 airports.yaml 注入)
     interval: 3600                     # 订阅更新间隔(秒); 机场限速严可调大到 7200
@@ -36,7 +36,7 @@ proxy-providers:
     override:
       udp: true
       # additional-prefix: "[A] "  # 打开后节点名带 [A] 前缀, 多机场时一眼看清来源
-  "机场二":
+  "快喵喵":
     type: http
     url: "REPLACE_ME_B"            # ← 机场订阅链接(或用 scripts/render.py 从 airports.yaml 注入)
     interval: 3600                     # 订阅更新间隔(秒); 机场限速严可调大到 7200
@@ -53,7 +53,7 @@ proxy-providers:
     override:
       udp: true
       # additional-prefix: "[B] "  # 打开后节点名带 [A] 前缀, 多机场时一眼看清来源
-  "机场三":
+  "早安云":
     type: http
     url: "REPLACE_ME_C"            # ← 机场订阅链接(或用 scripts/render.py 从 airports.yaml 注入)
     interval: 3600                     # 订阅更新间隔(秒); 机场限速严可调大到 7200
@@ -70,7 +70,7 @@ proxy-providers:
     override:
       udp: true
       # additional-prefix: "[C] "  # 打开后节点名带 [A] 前缀, 多机场时一眼看清来源
-  "机场四":
+  "饿饭CC云":
     type: http
     url: "REPLACE_ME_D"            # ← 机场订阅链接(或用 scripts/render.py 从 airports.yaml 注入)
     interval: 3600                     # 订阅更新间隔(秒); 机场限速严可调大到 7200
@@ -204,20 +204,20 @@ proxy-groups:
   - 🌐 其他地区
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: ♻️ 自动选择
   type: url-test
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   url: http://www.gstatic.com/generate_204
   interval: 180
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
   lazy: true
   tolerance: 50                       # 延迟差 <50ms 不切换, 避免来回抖
 
@@ -232,10 +232,10 @@ proxy-groups:
   interval: 300
   lazy: true
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 
 - name: ⚖️ 负载均衡
   type: load-balance
@@ -244,46 +244,46 @@ proxy-groups:
   interval: 300
   lazy: true
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 
-- name: 1️⃣ 机场一
+- name: 1️⃣ 鸡场
   type: url-test
   url: http://www.gstatic.com/generate_204
   interval: 300
   tolerance: 120
   lazy: true
   use:
-  - 机场一
+  - 鸡场
 
-- name: 2️⃣ 机场二
+- name: 2️⃣ 快喵喵
   type: url-test
   url: http://www.gstatic.com/generate_204
   interval: 300
   tolerance: 120
   lazy: true
   use:
-  - 机场二
+  - 快喵喵
 
-- name: 3️⃣ 机场三
+- name: 3️⃣ 早安云
   type: url-test
   url: http://www.gstatic.com/generate_204
   interval: 300
   tolerance: 120
   lazy: true
   use:
-  - 机场三
+  - 早安云
 
-- name: 4️⃣ 机场四
+- name: 4️⃣ 饿饭CC云
   type: url-test
   url: http://www.gstatic.com/generate_204
   interval: 300
   tolerance: 120
   lazy: true
   use:
-  - 机场四
+  - 饿饭CC云
 - name: 💬 即时通讯
   type: select
   proxies:
@@ -303,6 +303,11 @@ proxy-groups:
   - 🌐 其他地区
   - 🚀 手动选择
   - 🎯 全球直连
+  use:
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🌐 社交媒体
   type: select
   proxies:
@@ -324,10 +329,10 @@ proxy-groups:
   - 🎯 全球直连
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🚀 GitHub
   type: select
   proxies:
@@ -347,6 +352,11 @@ proxy-groups:
   - 🌐 其他地区
   - 🚀 手动选择
   - 🎯 全球直连
+  use:
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🤖 ChatGPT
   type: select
   proxies:
@@ -368,10 +378,10 @@ proxy-groups:
   - 🎯 全球直连
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🤖 Copilot
   type: select
   proxies:
@@ -393,10 +403,10 @@ proxy-groups:
   - 🎯 全球直连
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🤖 AI服务
   type: select
   proxies:
@@ -418,10 +428,10 @@ proxy-groups:
   - 🎯 全球直连
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🎶 TikTok
   type: select
   proxies:
@@ -443,10 +453,10 @@ proxy-groups:
   - 🎯 全球直连
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 📹 YouTube
   type: select
   proxies:
@@ -468,10 +478,10 @@ proxy-groups:
   - 🎯 全球直连
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🎥 Netflix
   type: select
   proxies:
@@ -493,10 +503,10 @@ proxy-groups:
   - 🎯 全球直连
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🎥 DisneyPlus
   type: select
   proxies:
@@ -518,10 +528,10 @@ proxy-groups:
   - 🎯 全球直连
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🎥 HBO
   type: select
   proxies:
@@ -543,10 +553,10 @@ proxy-groups:
   - 🎯 全球直连
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🎥 PrimeVideo
   type: select
   proxies:
@@ -568,10 +578,10 @@ proxy-groups:
   - 🎯 全球直连
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🎥 AppleTV+
   type: select
   proxies:
@@ -593,10 +603,10 @@ proxy-groups:
   - 🎯 全球直连
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🎥 Emby
   type: select
   proxies:
@@ -618,10 +628,10 @@ proxy-groups:
   - 🎯 全球直连
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🎻 Spotify
   type: select
   proxies:
@@ -643,10 +653,10 @@ proxy-groups:
   - 🎯 全球直连
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 📺 Bahamut
   type: select
   proxies:
@@ -654,6 +664,11 @@ proxy-groups:
   - 🚀 手动选择
   - ♻️ 自动选择
   - 🎯 全球直连
+  use:
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🌎 国外媒体
   type: select
   proxies:
@@ -675,10 +690,10 @@ proxy-groups:
   - 🎯 全球直连
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🛒 国外电商
   type: select
   proxies:
@@ -700,10 +715,10 @@ proxy-groups:
   - 🎯 全球直连
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 📢 谷歌FCM
   type: select
   proxies:
@@ -723,6 +738,11 @@ proxy-groups:
   - 🌐 其他地区
   - 🚀 手动选择
   - 🎯 全球直连
+  use:
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🇬 谷歌服务
   type: select
   proxies:
@@ -742,6 +762,11 @@ proxy-groups:
   - 🌐 其他地区
   - 🚀 手动选择
   - 🎯 全球直连
+  use:
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🍎 苹果服务
   type: select
   proxies:
@@ -799,6 +824,11 @@ proxy-groups:
   - 🇹🇷 土耳其节点
   - 🌐 其他地区
   - 🚀 手动选择
+  use:
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🎮 Steam
   type: select
   proxies:
@@ -820,10 +850,10 @@ proxy-groups:
   - 🚀 手动选择
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🚀 测速工具
   type: select
   proxies:
@@ -845,10 +875,10 @@ proxy-groups:
   - 🚀 手动选择
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🐟 漏网之鱼
   type: select
   proxies:
@@ -870,10 +900,10 @@ proxy-groups:
   - 🎯 全球直连
   filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
 - name: 🔀 非标端口
   type: select
   proxies:
@@ -884,10 +914,10 @@ proxy-groups:
   url: http://www.gstatic.com/generate_204
   filter: (?i)(🇭🇰|港|\bHK(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|hk|Hong Kong|HongKong|hongkong|HONG KONG|HONGKONG|深港|HKG|九龙|Kowloon|新界|沙田|荃湾|葵涌)
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
   interval: 300
   tolerance: 120
 - name: 🇺🇸 美国节点
@@ -895,10 +925,10 @@ proxy-groups:
   url: http://www.gstatic.com/generate_204
   filter: (?i)(🇺🇸|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|纽约|纽纽|亚特兰大|迈阿密|华盛顿|\bUS(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|United States|UnitedStates|UNITED STATES|USA|America|AMERICA|JFK|EWR|IAD|ATL|ORD|MIA|NYC|LAX|SFO|SEA|DFW|SJC)
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
   interval: 300
   tolerance: 120
 - name: 🇯🇵 日本节点
@@ -906,10 +936,10 @@ proxy-groups:
   url: http://www.gstatic.com/generate_204
   filter: (?i)(🇯🇵|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|(?<!尼|-)日|\bJP(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Japan|JAPAN|JPN|NRT|HND|KIX|TYO|OSA|关西|Kansai|KANSAI)
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
   interval: 300
   tolerance: 120
 - name: 🇸🇬 新加坡节点
@@ -917,10 +947,10 @@ proxy-groups:
   url: http://www.gstatic.com/generate_204
   filter: (?i)(🇸🇬|新加坡|坡|狮城|\bSG(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Singapore|SINGAPORE|SIN)
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
   interval: 300
   tolerance: 120
 - name: 🇼🇸 台湾节点
@@ -928,10 +958,10 @@ proxy-groups:
   url: http://www.gstatic.com/generate_204
   filter: (?i)(🇹🇼|🇼🇸|台|新北|彰化|\bTW(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Taiwan|TAIWAN|TWN|TPE|ROC)
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
   interval: 300
   tolerance: 120
 - name: 🇰🇷 韩国节点
@@ -939,10 +969,10 @@ proxy-groups:
   url: http://www.gstatic.com/generate_204
   filter: (?i)(🇰🇷|\bKR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Korea|KOREA|KOR|首尔|韩|韓|春川|Chuncheon|ICN)
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
   interval: 300
   tolerance: 120
 - name: 🇨🇦 加拿大节点
@@ -950,10 +980,10 @@ proxy-groups:
   url: http://www.gstatic.com/generate_204
   filter: (?i)(🇨🇦|加拿大|\bCA(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Canada|CANADA|CAN|渥太华|温哥华|卡尔加里|蒙特利尔|Montreal|YVR|YYZ|YUL)
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
   interval: 300
   tolerance: 120
 - name: 🇬🇧 英国节点
@@ -961,10 +991,10 @@ proxy-groups:
   url: http://www.gstatic.com/generate_204
   filter: (?i)(🇬🇧|英国|Britain|United Kingdom|UNITED KINGDOM|England|伦敦|曼彻斯特|Manchester|\bUK(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|GBR|LHR|MAN)
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
   interval: 300
   tolerance: 120
 - name: 🇫🇷 法国节点
@@ -972,10 +1002,10 @@ proxy-groups:
   url: http://www.gstatic.com/generate_204
   filter: (?i)(🇫🇷|法国|\bFR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|France|FRANCE|FRA|巴黎|马赛|Marseille|CDG|MRS)
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
   interval: 300
   tolerance: 120
 - name: 🇩🇪 德国节点
@@ -983,10 +1013,10 @@ proxy-groups:
   url: http://www.gstatic.com/generate_204
   filter: (?i)(🇩🇪|德国|Germany|GERMANY|\bDE(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|DEU|柏林|法兰克福|慕尼黑|Munich|MUC)
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
   interval: 300
   tolerance: 120
 - name: 🇳🇱 荷兰节点
@@ -994,10 +1024,10 @@ proxy-groups:
   url: http://www.gstatic.com/generate_204
   filter: (?i)(🇳🇱|荷兰|Netherlands|NETHERLANDS|\bNL(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|NLD|阿姆斯特丹|AMS)
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
   interval: 300
   tolerance: 120
 - name: 🇹🇷 土耳其节点
@@ -1005,10 +1035,10 @@ proxy-groups:
   url: http://www.gstatic.com/generate_204
   filter: (?i)(🇹🇷|土耳其|Turkey|TURKEY|Türkiye|\bTR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|TUR|IST|ANK)
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
   interval: 300
   tolerance: 120
 - name: 🌐 其他地区
@@ -1016,10 +1046,10 @@ proxy-groups:
   url: http://www.gstatic.com/generate_204
   filter: ^(?!.*(港|\bHK(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|hk|Hong Kong|HongKong|hongkong|HONG KONG|HONGKONG|深港|HKG|🇭🇰|九龙|Kowloon|新界|沙田|荃湾|葵涌|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|纽约|纽纽|亚特兰大|迈阿密|华盛顿|\bUS(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|United States|UnitedStates|UNITED STATES|USA|America|AMERICA|JFK|EWR|IAD|ATL|ORD|MIA|NYC|LAX|SFO|SEA|DFW|SJC|🇺🇸|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|(?<!尼|-)日|\bJP(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Japan|JAPAN|JPN|NRT|HND|KIX|TYO|OSA|🇯🇵|关西|Kansai|KANSAI|新加坡|坡|狮城|\bSG(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Singapore|SINGAPORE|SIN|🇸🇬|台|新北|彰化|\bTW(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Taiwan|TAIWAN|TWN|TPE|ROC|🇹🇼|\bKR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Korea|KOREA|KOR|首尔|韩|韓|春川|Chuncheon|ICN|🇰🇷|加拿大|\bCA(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Canada|CANADA|CAN|渥太华|温哥华|卡尔加里|蒙特利尔|Montreal|YVR|YYZ|YUL|🇨🇦|英国|Britain|United Kingdom|UNITED KINGDOM|England|伦敦|曼彻斯特|Manchester|\bUK(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|GBR|LHR|MAN|🇬🇧|法国|\bFR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|France|FRANCE|FRA|巴黎|马赛|Marseille|CDG|MRS|🇫🇷|德国|Germany|GERMANY|\bDE(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|DEU|柏林|法兰克福|慕尼黑|Munich|MUC|🇩🇪|荷兰|Netherlands|NETHERLANDS|\bNL(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|NLD|阿姆斯特丹|AMS|🇳🇱|土耳其|Turkey|TURKEY|Türkiye|\bTR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|TUR|IST|ANK|🇹🇷|DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB)).*$
   use:
-  - 机场一
-  - 机场二
-  - 机场三
-  - 机场四
+  - 鸡场
+  - 快喵喵
+  - 早安云
+  - 饿饭CC云
   interval: 300
   tolerance: 120
 - name: 🎯 全球直连
@@ -1033,8 +1063,18 @@ proxy-groups:
   proxies:
   - 🐟 漏网之鱼
 rules:
+- DOMAIN-SUFFIX,520533.xyz,🎯 全球直连
 - GEOSITE,private,🎯 全球直连
 - GEOIP,private,🎯 全球直连,no-resolve
+# --- 微信全家桶强制直连(微信语音走代理会严重劣化; 必须在 category-communication 之前截住) ---
+- DOMAIN-SUFFIX,qq.com,🎯 全球直连
+- DOMAIN-SUFFIX,qpic.cn,🎯 全球直连
+- DOMAIN-SUFFIX,qlogo.cn,🎯 全球直连
+- DOMAIN-SUFFIX,qy.net,🎯 全球直连
+- DOMAIN-KEYWORD,wechat,🎯 全球直连
+- DOMAIN-KEYWORD,weixin,🎯 全球直连
+- PROCESS-NAME,WeChat,🎯 全球直连
+- PROCESS-NAME,weixin,🎯 全球直连
 - RULE-SET,Advertising,🛑 广告拦截
 - RULE-SET,Custom_Direct_Domain,🎯 全球直连
 - RULE-SET,Custom_Direct_IP,🎯 全球直连
