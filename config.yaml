@@ -26,7 +26,7 @@ proxy-providers:
     path: ./proxy_provider/A.yaml
     proxy: DIRECT                      # 拉订阅时不走代理
     # 在该机场这一层先滤掉公告/流量/到期等非节点条目, 各策略组就不必重复配
-    filter: "^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$"
+    filter: "^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire|：|客户端|升级|域名|兼容|图标|尽快|暂时)).*$"
     health-check:
       enable: true
       url: https://www.gstatic.com/generate_204
@@ -43,7 +43,7 @@ proxy-providers:
     path: ./proxy_provider/B.yaml
     proxy: DIRECT                      # 拉订阅时不走代理
     # 在该机场这一层先滤掉公告/流量/到期等非节点条目, 各策略组就不必重复配
-    filter: "^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$"
+    filter: "^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire|：|客户端|升级|域名|兼容|图标|尽快|暂时)).*$"
     health-check:
       enable: true
       url: https://www.gstatic.com/generate_204
@@ -60,7 +60,7 @@ proxy-providers:
     path: ./proxy_provider/C.yaml
     proxy: DIRECT                      # 拉订阅时不走代理
     # 在该机场这一层先滤掉公告/流量/到期等非节点条目, 各策略组就不必重复配
-    filter: "^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$"
+    filter: "^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire|：|客户端|升级|域名|兼容|图标|尽快|暂时)).*$"
     health-check:
       enable: true
       url: https://www.gstatic.com/generate_204
@@ -77,7 +77,7 @@ proxy-providers:
     path: ./proxy_provider/D.yaml
     proxy: DIRECT                      # 拉订阅时不走代理
     # 在该机场这一层先滤掉公告/流量/到期等非节点条目, 各策略组就不必重复配
-    filter: "^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$"
+    filter: "^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire|：|客户端|升级|域名|兼容|图标|尽快|暂时)).*$"
     health-check:
       enable: true
       url: https://www.gstatic.com/generate_204
@@ -208,11 +208,12 @@ proxy-groups:
   - 快喵喵
   - 早安云
   - 饿饭CC云
-- name: ♻️ 自动选择
+- &UrlTest                          # 测速参数锚点: 改这一处, 所有 <<: *UrlTest 的组全生效
+  name: ♻️ 自动选择
   type: url-test
-  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire)).*$
+  filter: ^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB|Expire|：|客户端|升级|域名|兼容|图标|尽快|暂时)).*$
   url: http://www.gstatic.com/generate_204
-  interval: 180
+  interval: 150                      # 5分钟->2.5分钟, 更快发现节点失效
   use:
   - 鸡场
   - 快喵喵
@@ -220,6 +221,9 @@ proxy-groups:
   - 饿饭CC云
   lazy: true
   tolerance: 50                       # 延迟差 <50ms 不切换, 避免来回抖
+  timeout: 2000                       # 死节点探测超时(默认5000ms) -> 每轮测速耗时砍掉一半以上
+  max-failed-times: 3                 # 连续失败3次触发强制复查(默认5), 死节点更快被剔除
+  expected-status: 204                # 只有真返回204才算活, 防假活节点霸占选中位
 
 - name: 🛑 广告拦截
   type: select
@@ -231,6 +235,8 @@ proxy-groups:
   url: http://www.gstatic.com/generate_204
   interval: 300
   lazy: true
+  timeout: 2000
+  max-failed-times: 3
   use:
   - 鸡场
   - 快喵喵
@@ -243,6 +249,8 @@ proxy-groups:
   url: http://www.gstatic.com/generate_204
   interval: 300
   lazy: true
+  timeout: 2000
+  max-failed-times: 3
   use:
   - 鸡场
   - 快喵喵
@@ -250,38 +258,22 @@ proxy-groups:
   - 饿饭CC云
 
 - name: 1️⃣ 鸡场
-  type: url-test
-  url: http://www.gstatic.com/generate_204
-  interval: 300
-  tolerance: 120
-  lazy: true
+  <<: *UrlTest
   use:
   - 鸡场
 
 - name: 2️⃣ 快喵喵
-  type: url-test
-  url: http://www.gstatic.com/generate_204
-  interval: 300
-  tolerance: 120
-  lazy: true
+  <<: *UrlTest
   use:
   - 快喵喵
 
 - name: 3️⃣ 早安云
-  type: url-test
-  url: http://www.gstatic.com/generate_204
-  interval: 300
-  tolerance: 120
-  lazy: true
+  <<: *UrlTest
   use:
   - 早安云
 
 - name: 4️⃣ 饿饭CC云
-  type: url-test
-  url: http://www.gstatic.com/generate_204
-  interval: 300
-  tolerance: 120
-  lazy: true
+  <<: *UrlTest
   use:
   - 饿饭CC云
 - name: 💬 即时通讯
@@ -910,148 +902,122 @@ proxy-groups:
   - 🐟 遵循规则
   - 🎯 全球直连
 - name: 🇭🇰 香港节点
-  type: url-test
-  url: http://www.gstatic.com/generate_204
+  <<: *UrlTest
   filter: (?i)(🇭🇰|港|\bHK(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|hk|Hong Kong|HongKong|hongkong|HONG KONG|HONGKONG|深港|HKG|九龙|Kowloon|新界|沙田|荃湾|葵涌)
+  exclude-filter: '：|客户端|升级|域名|兼容|图标|尽快|暂时'   # 公告节点双保险(provider filter 之后再拦一次)
   use:
   - 鸡场
   - 快喵喵
   - 早安云
   - 饿饭CC云
-  interval: 300
-  tolerance: 120
 - name: 🇺🇸 美国节点
-  type: url-test
-  url: http://www.gstatic.com/generate_204
+  <<: *UrlTest
   filter: (?i)(🇺🇸|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|纽约|纽纽|亚特兰大|迈阿密|华盛顿|\bUS(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|United States|UnitedStates|UNITED STATES|USA|America|AMERICA|JFK|EWR|IAD|ATL|ORD|MIA|NYC|LAX|SFO|SEA|DFW|SJC)
+  exclude-filter: '：|客户端|升级|域名|兼容|图标|尽快|暂时'   # 公告节点双保险(provider filter 之后再拦一次)
   use:
   - 鸡场
   - 快喵喵
   - 早安云
   - 饿饭CC云
-  interval: 300
-  tolerance: 120
 - name: 🇯🇵 日本节点
-  type: url-test
-  url: http://www.gstatic.com/generate_204
+  <<: *UrlTest
   filter: (?i)(🇯🇵|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|(?<!尼|-)日|\bJP(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Japan|JAPAN|JPN|NRT|HND|KIX|TYO|OSA|关西|Kansai|KANSAI)
+  exclude-filter: '：|客户端|升级|域名|兼容|图标|尽快|暂时'   # 公告节点双保险(provider filter 之后再拦一次)
   use:
   - 鸡场
   - 快喵喵
   - 早安云
   - 饿饭CC云
-  interval: 300
-  tolerance: 120
 - name: 🇸🇬 新加坡节点
-  type: url-test
-  url: http://www.gstatic.com/generate_204
+  <<: *UrlTest
   filter: (?i)(🇸🇬|新加坡|坡|狮城|\bSG(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Singapore|SINGAPORE|SIN)
+  exclude-filter: '：|客户端|升级|域名|兼容|图标|尽快|暂时'   # 公告节点双保险(provider filter 之后再拦一次)
   use:
   - 鸡场
   - 快喵喵
   - 早安云
   - 饿饭CC云
-  interval: 300
-  tolerance: 120
 - name: 🇼🇸 台湾节点
-  type: url-test
-  url: http://www.gstatic.com/generate_204
+  <<: *UrlTest
   filter: (?i)(🇹🇼|🇼🇸|台|新北|彰化|\bTW(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Taiwan|TAIWAN|TWN|TPE|ROC)
+  exclude-filter: '：|客户端|升级|域名|兼容|图标|尽快|暂时'   # 公告节点双保险(provider filter 之后再拦一次)
   use:
   - 鸡场
   - 快喵喵
   - 早安云
   - 饿饭CC云
-  interval: 300
-  tolerance: 120
 - name: 🇰🇷 韩国节点
-  type: url-test
-  url: http://www.gstatic.com/generate_204
+  <<: *UrlTest
   filter: (?i)(🇰🇷|\bKR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Korea|KOREA|KOR|首尔|韩|韓|春川|Chuncheon|ICN)
+  exclude-filter: '：|客户端|升级|域名|兼容|图标|尽快|暂时'   # 公告节点双保险(provider filter 之后再拦一次)
   use:
   - 鸡场
   - 快喵喵
   - 早安云
   - 饿饭CC云
-  interval: 300
-  tolerance: 120
 - name: 🇨🇦 加拿大节点
-  type: url-test
-  url: http://www.gstatic.com/generate_204
+  <<: *UrlTest
   filter: (?i)(🇨🇦|加拿大|\bCA(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Canada|CANADA|CAN|渥太华|温哥华|卡尔加里|蒙特利尔|Montreal|YVR|YYZ|YUL)
+  exclude-filter: '：|客户端|升级|域名|兼容|图标|尽快|暂时'   # 公告节点双保险(provider filter 之后再拦一次)
   use:
   - 鸡场
   - 快喵喵
   - 早安云
   - 饿饭CC云
-  interval: 300
-  tolerance: 120
 - name: 🇬🇧 英国节点
-  type: url-test
-  url: http://www.gstatic.com/generate_204
+  <<: *UrlTest
   filter: (?i)(🇬🇧|英国|Britain|United Kingdom|UNITED KINGDOM|England|伦敦|曼彻斯特|Manchester|\bUK(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|GBR|LHR|MAN)
+  exclude-filter: '：|客户端|升级|域名|兼容|图标|尽快|暂时'   # 公告节点双保险(provider filter 之后再拦一次)
   use:
   - 鸡场
   - 快喵喵
   - 早安云
   - 饿饭CC云
-  interval: 300
-  tolerance: 120
 - name: 🇫🇷 法国节点
-  type: url-test
-  url: http://www.gstatic.com/generate_204
+  <<: *UrlTest
   filter: (?i)(🇫🇷|法国|\bFR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|France|FRANCE|FRA|巴黎|马赛|Marseille|CDG|MRS)
+  exclude-filter: '：|客户端|升级|域名|兼容|图标|尽快|暂时'   # 公告节点双保险(provider filter 之后再拦一次)
   use:
   - 鸡场
   - 快喵喵
   - 早安云
   - 饿饭CC云
-  interval: 300
-  tolerance: 120
 - name: 🇩🇪 德国节点
-  type: url-test
-  url: http://www.gstatic.com/generate_204
+  <<: *UrlTest
   filter: (?i)(🇩🇪|德国|Germany|GERMANY|\bDE(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|DEU|柏林|法兰克福|慕尼黑|Munich|MUC)
+  exclude-filter: '：|客户端|升级|域名|兼容|图标|尽快|暂时'   # 公告节点双保险(provider filter 之后再拦一次)
   use:
   - 鸡场
   - 快喵喵
   - 早安云
   - 饿饭CC云
-  interval: 300
-  tolerance: 120
 - name: 🇳🇱 荷兰节点
-  type: url-test
-  url: http://www.gstatic.com/generate_204
+  <<: *UrlTest
   filter: (?i)(🇳🇱|荷兰|Netherlands|NETHERLANDS|\bNL(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|NLD|阿姆斯特丹|AMS)
+  exclude-filter: '：|客户端|升级|域名|兼容|图标|尽快|暂时'   # 公告节点双保险(provider filter 之后再拦一次)
   use:
   - 鸡场
   - 快喵喵
   - 早安云
   - 饿饭CC云
-  interval: 300
-  tolerance: 120
 - name: 🇹🇷 土耳其节点
-  type: url-test
-  url: http://www.gstatic.com/generate_204
+  <<: *UrlTest
   filter: (?i)(🇹🇷|土耳其|Turkey|TURKEY|Türkiye|\bTR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|TUR|IST|ANK)
+  exclude-filter: '：|客户端|升级|域名|兼容|图标|尽快|暂时'   # 公告节点双保险(provider filter 之后再拦一次)
   use:
   - 鸡场
   - 快喵喵
   - 早安云
   - 饿饭CC云
-  interval: 300
-  tolerance: 120
 - name: 🌐 其他地区
-  type: url-test
-  url: http://www.gstatic.com/generate_204
+  <<: *UrlTest
   filter: ^(?!.*(港|\bHK(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|hk|Hong Kong|HongKong|hongkong|HONG KONG|HONGKONG|深港|HKG|🇭🇰|九龙|Kowloon|新界|沙田|荃湾|葵涌|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|纽约|纽纽|亚特兰大|迈阿密|华盛顿|\bUS(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|United States|UnitedStates|UNITED STATES|USA|America|AMERICA|JFK|EWR|IAD|ATL|ORD|MIA|NYC|LAX|SFO|SEA|DFW|SJC|🇺🇸|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|(?<!尼|-)日|\bJP(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Japan|JAPAN|JPN|NRT|HND|KIX|TYO|OSA|🇯🇵|关西|Kansai|KANSAI|新加坡|坡|狮城|\bSG(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Singapore|SINGAPORE|SIN|🇸🇬|台|新北|彰化|\bTW(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Taiwan|TAIWAN|TWN|TPE|ROC|🇹🇼|\bKR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Korea|KOREA|KOR|首尔|韩|韓|春川|Chuncheon|ICN|🇰🇷|加拿大|\bCA(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|Canada|CANADA|CAN|渥太华|温哥华|卡尔加里|蒙特利尔|Montreal|YVR|YYZ|YUL|🇨🇦|英国|Britain|United Kingdom|UNITED KINGDOM|England|伦敦|曼彻斯特|Manchester|\bUK(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|GBR|LHR|MAN|🇬🇧|法国|\bFR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|France|FRANCE|FRA|巴黎|马赛|Marseille|CDG|MRS|🇫🇷|德国|Germany|GERMANY|\bDE(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|DEU|柏林|法兰克福|慕尼黑|Munich|MUC|🇩🇪|荷兰|Netherlands|NETHERLANDS|\bNL(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|NLD|阿姆斯特丹|AMS|🇳🇱|土耳其|Turkey|TURKEY|Türkiye|\bTR(?:[-_ ]?\d+(?:[-_ ]?[A-Za-z]{2,})?)?\b|TUR|IST|ANK|🇹🇷|DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic|GB)).*$
+  exclude-filter: '：|客户端|升级|域名|兼容|图标|尽快|暂时'   # 公告节点双保险(provider filter 之后再拦一次)
   use:
   - 鸡场
   - 快喵喵
   - 早安云
   - 饿饭CC云
-  interval: 300
-  tolerance: 120
 - name: 🎯 全球直连
   type: select
   url: http://www.gstatic.com/generate_204

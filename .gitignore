@@ -14,5 +14,9 @@ cache.db
 *.log
 geosite.dat
 geoip.dat
+GeoIP.dat
+GeoSite.dat
 Country.mmdb
 GeoLite2-ASN.mmdb
+bing.html
+ddg.html
